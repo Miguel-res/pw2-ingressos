@@ -4,15 +4,13 @@ import br.com.etec.ingresso.enums.CategoriaFilmeEnum;
 import br.com.etec.ingresso.enums.ClassificacaoIndicativaEnum;
 import br.com.etec.ingresso.enums.SimNaoEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="TBL_FILME")

@@ -3,6 +3,8 @@ package br.com.etec.ingresso.controller;
 import br.com.etec.ingresso.entity.Filme;
 import br.com.etec.ingresso.enums.ClassificacaoIndicativaEnum;
 import br.com.etec.ingresso.enums.SimNaoEnum;
+import br.com.etec.ingresso.repository.FilmeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,34 +15,21 @@ import java.util.List;
 @RequestMapping("/filmes")
 public class FilmeController {
 
+    @Autowired
+    private FilmeRepository filmeRepository;
+
     @GetMapping
     public List<Filme> listar(){
-        Filme filme1 = Filme.builder()
-                .id(1L)
-                .nome("Matrix")
-                .classificacao(ClassificacaoIndicativaEnum.A16)
-                .emCartaz(SimNaoEnum.S)
-                .build();
-        Filme filme2 = Filme.builder()
-                .id(2L)
-                .nome("Homem-Aranha")
-                .classificacao(ClassificacaoIndicativaEnum.A16)
-                .emCartaz(SimNaoEnum.S)
-                .build();
-        return List.of(filme1, filme2);
+
+        return filmeRepository.findAll();
     }
     List<Long> idsExistentes = List.of(1L, 2L, 3L);
-    @GetMapping("/{id}")
 
+    @GetMapping("/{id}")
     public ResponseEntity<Filme> buscarPorId(@PathVariable Long id){
-        if (idsExistentes.contains(id)) {
-            Filme filme1 = Filme.builder()
-                    .id(id)
-                    .nome("Matrix")
-                    .classificacao(ClassificacaoIndicativaEnum.A16)
-                    .emCartaz(SimNaoEnum.S)
-                    .build();
-            return ResponseEntity.ok(filme1);
+        var filme1 = filmeRepository.findById(id); //Optional<Filme>
+        if (filme1.isPresent()) {
+            return ResponseEntity.ok(filme1.get());
         }
         return ResponseEntity.notFound().build();
     }
